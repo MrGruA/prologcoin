@@ -1637,6 +1637,8 @@ void builtins::load(interpreter_base &interp) {
   
     // Profiling
     i.load_builtin(con_cell("profile", 0), &builtins::profile_0);
+    i.load_builtin(i.functor("debug_on", 0), &builtins::debug_on_0);
+    i.load_builtin(i.functor("debug_off", 0), &builtins::debug_off_0);
 
     // Simple
     i.load_builtin(con_cell("true",0), &builtins::true_0);
@@ -1721,7 +1723,7 @@ void builtins::load(interpreter_base &interp) {
     i.load_builtin(con_cell("toc",0), builtin(&builtins::toc_1));
     i.load_builtin(con_cell("toc",1), builtin(&builtins::toc_1));
 
-    i.load_builtin(con_cell("dump_stack",0), builtin(&builtins::dump_stack_0));
+    i.load_builtin(i.functor("dump_stack",0), builtin(&builtins::dump_stack_0));
 
     // Program database
     i.load_builtin(con_cell("show",0), builtin(&builtins::show_0));
