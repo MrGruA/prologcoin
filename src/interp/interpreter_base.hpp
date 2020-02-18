@@ -1062,6 +1062,7 @@ public:
         { return register_m_ != nullptr; }
 
     void dump_stack();
+    void dump_choice_points();
 
 
   
@@ -1193,7 +1194,7 @@ protected:
 
     static inline size_t env_num_y(interpreter_base *interp, environment_base_t *env)
     {
-      return 0;
+      return (sizeof(environment_naive_t)-sizeof(environment_base_t))/sizeof(term);
     }
   
     static inline void save_state(interpreter_base *interp)
@@ -1519,10 +1520,11 @@ protected:
 	    set_pr(ee1->pr);
 	    break;
    	    }
-	case ENV_WAM:
+	case ENV_WAM: {
   	    set_cp(e0()->cp);
 	    set_e(e0()->ce);
 	    break;
+	}
 	}
 	    
 	// std::cout << "[after]  deallocate_environment: e=" << e() << " p=" << to_string_cp(p()) << " cp=" << to_string_cp(cp()) << "\n";
@@ -2169,6 +2171,13 @@ template<> inline environment_t * interpreter_base::allocate_environment<ENV_WAM
     new_e->ce = save_e();
     new_e->cp = cp();
     set_e(new_e, ENV_WAM);
+
+    auto ny = num_y_fn()(this, true);
+    printf("New env(%llu): %p\n", ny, new_e);
+    for(size_t i = 0; i < ny; i++) {
+      y(i) = common::int_cell(0);
+    }
+
     return new_e;
 }
 
