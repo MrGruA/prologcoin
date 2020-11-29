@@ -1490,6 +1490,11 @@ bool builtins::show_0(interpreter_base &interp, size_t arity, common::term args[
     return true;
 }
 
+bool builtins::dump_roots_0(interpreter_base &interp, size_t arity, common::term args[]) {
+    interp.dump_roots();
+    return true;
+}
+
 bool builtins::dump_stack_0(interpreter_base &interp, size_t arity, common::term args[]) {
     interp.dump_stack();
     return true;
@@ -1728,6 +1733,7 @@ void builtins::load(interpreter_base &interp) {
     i.load_builtin(con_cell("toc",0), builtin(&builtins::toc_1));
     i.load_builtin(con_cell("toc",1), builtin(&builtins::toc_1));
 
+    i.load_builtin(i.functor("dump_roots",0), builtin(&builtins::dump_roots_0));
     i.load_builtin(i.functor("dump_stack",0), builtin(&builtins::dump_stack_0));
     i.load_builtin(i.functor("dump_choice_points",0), builtin(&builtins::dump_choice_points_0));
 
